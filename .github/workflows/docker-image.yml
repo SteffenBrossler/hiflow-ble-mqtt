@@ -6,16 +6,58 @@ on:
   pull_request:
     branches: [ "dev" ]
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
 
   build:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+
     steps:
     - uses: actions/checkout@v4
-    - name: Build BLE Image
-      run: docker build . --file Dockerfile --tag hiflow-ble-mqtt:$(date +%s)
-    
-    - name: Build webui Image
-      run: docker build . --file Dockerfile.web --tag hiflow-web-mqtt:$(date +%s)
+
+    - name: Log in to GHCR
+      # Auf PRs aus Forks steht kein Push-Recht am GITHUB_TOKEN zur Verfügung,
+      # deshalb nur bei push-Events einloggen und pushen.
+      if: github.event_name == 'push'
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata for BLE image
+      id: meta-ble
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ github.repository }}
+
+    - name: Build and push BLE Image
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        file: Dockerfile
+        push: ${{ github.event_name == 'push' }}
+        tags: ${{ steps.meta-ble.outputs.tags }}
+        labels: ${{ steps.meta-ble.outputs.labels }}
+
+    - name: Extract metadata for webui image
+      id: meta-web
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ github.repository }}-web
+
+    - name: Build and push webui Image
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        file: Dockerfile.web
+        push: ${{ github.event_name == 'push' }}
+        tags: ${{ steps.meta-web.outputs.tags }}
+        labels: ${{ steps.meta-web.outputs.labels }}
