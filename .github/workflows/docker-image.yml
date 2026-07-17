@@ -8,6 +8,12 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  # Multi-Arch nur beim tatsächlichen Push bauen: ein Multi-Platform-Ergebnis
+  # lässt sich nicht per --load in den lokalen Docker-Daemon laden, daher bei
+  # PR-Builds (kein Push) nur amd64 bauen.
+  # linux/arm/v7 bewusst ausgelassen: cryptography liefert dafür keine
+  # PyPI-Wheels mehr, ein Source-Build würde Rust/Cargo im Image erfordern.
+  PLATFORMS: linux/amd64,linux/arm64
 
 jobs:
 
@@ -21,6 +27,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
 
     - name: Log in to GHCR
       # Auf PRs aus Forks steht kein Push-Recht am GITHUB_TOKEN zur Verfügung,
@@ -43,6 +55,7 @@ jobs:
       with:
         context: .
         file: Dockerfile
+        platforms: ${{ github.event_name == 'push' && env.PLATFORMS || 'linux/amd64' }}
         push: ${{ github.event_name == 'push' }}
         tags: ${{ steps.meta-ble.outputs.tags }}
         labels: ${{ steps.meta-ble.outputs.labels }}
@@ -58,6 +71,7 @@ jobs:
       with:
         context: .
         file: Dockerfile.web
+        platforms: ${{ github.event_name == 'push' && env.PLATFORMS || 'linux/amd64' }}
         push: ${{ github.event_name == 'push' }}
         tags: ${{ steps.meta-web.outputs.tags }}
         labels: ${{ steps.meta-web.outputs.labels }}
