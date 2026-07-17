@@ -1,0 +1,14 @@
+services:
+  hiflow-ble:
+    build: .
+    restart: unless-stopped
+    # BLE requires host network + privileged access to the Bluetooth adapter
+    network_mode: host
+    privileged: true
+    volumes:
+      - /var/run/dbus:/var/run/dbus  # BlueZ D-Bus socket
+      - ./state:/app/state           # restart_bluetooth.state for the host watchdog
+    env_file:
+      - .env   # HIFLOW_* / MQTT_* — see .env.example
+    environment:
+      HIFLOW_STATE_DIR: "/app/state"  # flag file for the host watchdog, fixed internal path

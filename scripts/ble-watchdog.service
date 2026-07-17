@@ -1,0 +1,7 @@
+[Unit]
+Description=Recover hung onboard Bluetooth adapter (hci0)
+ConditionPathExists=/usr/local/bin/ble-watchdog.sh
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/ble-watchdog.sh

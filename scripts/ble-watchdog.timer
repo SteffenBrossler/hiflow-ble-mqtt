@@ -1,0 +1,10 @@
+[Unit]
+Description=Fallback BLE adapter watchdog poll (every 5 min) for silent failures not caught by ble-watchdog.path
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+AccuracySec=30s
+
+[Install]
+WantedBy=timers.target

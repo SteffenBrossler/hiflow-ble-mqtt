@@ -1,0 +1,13 @@
+[Unit]
+Description=Trigger BLE watchdog immediately when hiflow-ble signals InProgress
+
+# PathExists cannot read environment variables, so this file is a template.
+# The placeholder below is substituted with the actual flag-file path
+# (COMPOSE_DIR/state/restart_bluetooth.state) by scripts/install-ble-watchdog.sh
+# at install time — do not install this file directly with cp.
+[Path]
+PathExists=@FLAG_FILE@
+Unit=ble-watchdog.service
+
+[Install]
+WantedBy=multi-user.target
