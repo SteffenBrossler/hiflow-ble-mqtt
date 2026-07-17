@@ -1,0 +1,242 @@
+:root {
+  --page-bg: #0a0f1c;
+  --surface: #121a2c;
+  --surface-2: #1a2439;
+  --border: rgba(255, 255, 255, 0.08);
+  --text-primary: #f3f6fb;
+  --text-secondary: #9aa7bd;
+  --text-muted: #6b7690;
+
+  --accent-blue: #3987e5;
+  --accent-blue-soft: rgba(57, 135, 229, 0.16);
+  --status-good: #16c172;
+  --status-good-soft: rgba(22, 193, 114, 0.14);
+  --status-warning: #fab219;
+  --status-warning-soft: rgba(250, 178, 25, 0.14);
+  --status-critical: #e15656;
+  --status-critical-soft: rgba(225, 86, 86, 0.14);
+
+  --radius: 14px;
+  font-size: 16px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(57, 135, 229, 0.10), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(22, 193, 114, 0.06), transparent 55%),
+    var(--page-bg);
+  color: var(--text-primary);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 20px 60px;
+}
+
+/* ── Header ─────────────────────────────────────────── */
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.brand { display: flex; align-items: center; gap: 14px; }
+
+.brand-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  background: var(--accent-blue-soft);
+  color: var(--status-warning);
+}
+
+.brand h1 { margin: 0; font-size: 20px; font-weight: 650; letter-spacing: -0.01em; }
+.brand-sub { margin: 2px 0 0; font-size: 13px; color: var(--text-secondary); }
+
+.status-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--text-secondary);
+}
+
+.pill .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex: none;
+}
+
+.pill-good { color: var(--status-good); background: var(--status-good-soft); border-color: rgba(22,193,114,0.25); }
+.pill-good .dot { background: var(--status-good); box-shadow: 0 0 0 3px var(--status-good-soft); }
+
+.pill-warning { color: var(--status-warning); background: var(--status-warning-soft); border-color: rgba(250,178,25,0.25); }
+.pill-warning .dot { background: var(--status-warning); box-shadow: 0 0 0 3px var(--status-warning-soft); }
+
+.pill-critical { color: var(--status-critical); background: var(--status-critical-soft); border-color: rgba(225,86,86,0.25); }
+.pill-critical .dot { background: var(--status-critical); box-shadow: 0 0 0 3px var(--status-critical-soft); }
+
+/* ── Empty state ────────────────────────────────────── */
+
+.empty-state {
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 48px 20px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+/* ── Device block ───────────────────────────────────── */
+
+.device { margin-bottom: 36px; }
+
+.device-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.device-title { margin: 0; font-size: 16px; font-weight: 600; color: var(--text-primary); }
+.device-meta { font-size: 12.5px; color: var(--text-muted); }
+
+.device.is-warning .device-meta { color: var(--status-warning); }
+.device.is-critical .device-meta { color: var(--status-critical); }
+.device.is-muted .device-meta { color: var(--text-muted); }
+
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin: 24px 0 12px;
+}
+
+/* ── KPI tiles ──────────────────────────────────────── */
+
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.tile-label {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  font-weight: 550;
+}
+
+.tile-value { display: flex; align-items: baseline; gap: 4px; }
+.tile-value .num { font-size: 24px; font-weight: 650; letter-spacing: -0.01em; }
+.tile-value .unit { font-size: 13px; color: var(--text-muted); }
+
+.tile-hero {
+  grid-column: span 2;
+  background: linear-gradient(155deg, var(--accent-blue-soft), var(--surface) 65%);
+  border-color: rgba(57, 135, 229, 0.28);
+}
+.tile-hero .tile-value .num { font-size: 40px; color: var(--accent-blue); }
+.tile-hero .tile-label { color: #bcd4f7; }
+
+.device.is-stale .tile .num { color: var(--text-muted); }
+.device.is-stale .tile-hero .tile-value .num { color: var(--text-muted); }
+
+/* ── Panels ─────────────────────────────────────────── */
+
+.panel-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.panel-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+}
+
+.panel-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.panel-name { font-size: 14px; font-weight: 600; }
+.panel-power { font-size: 15px; font-weight: 650; color: var(--status-good); }
+
+.panel-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--surface-2);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.panel-bar-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--accent-blue), var(--status-good));
+  transition: width 0.4s ease;
+}
+
+.panel-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+  margin: 0;
+}
+
+.panel-stats dt { font-size: 11.5px; color: var(--text-muted); margin: 0 0 2px; }
+.panel-stats dd { font-size: 14px; font-weight: 550; margin: 0; }
+
+/* ── Footer ─────────────────────────────────────────── */
+
+.foot {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+@media (max-width: 480px) {
+  .tile-hero { grid-column: span 2; }
+  .brand h1 { font-size: 18px; }
+}

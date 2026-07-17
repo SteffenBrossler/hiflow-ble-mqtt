@@ -12,3 +12,14 @@ services:
       - .env   # HIFLOW_* / MQTT_* — see .env.example
     environment:
       HIFLOW_STATE_DIR: "/app/state"  # flag file for the host watchdog, fixed internal path
+  
+  hiflow-web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    restart: unless-stopped
+    # Only talks to the MQTT broker — no Bluetooth access needed.
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env      

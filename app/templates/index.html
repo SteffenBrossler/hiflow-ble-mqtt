@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HiFlow Dashboard</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">☀</span>
+        <div>
+          <h1>HiFlow Dashboard</h1>
+          <p class="brand-sub">Hoymiles Wechselrichter · BLE → MQTT</p>
+        </div>
+      </div>
+      <div class="status-row" id="status-row">
+        <span class="pill pill-muted" id="pill-mqtt">
+          <span class="dot"></span> MQTT wird geprüft …
+        </span>
+        <span class="pill pill-muted" id="pill-ble">
+          <span class="dot"></span> BLE wird geprüft …
+        </span>
+      </div>
+    </header>
+
+    <main id="app">
+      <div class="empty-state" id="empty-state">
+        <p>Warte auf die erste Nachricht vom Wechselrichter …</p>
+      </div>
+      <div id="devices"></div>
+    </main>
+
+    <footer class="foot">
+      <span id="last-refresh">–</span>
+    </footer>
+  </div>
+
+  <template id="device-template">
+    <section class="device">
+      <div class="device-head">
+        <h2 class="device-title"></h2>
+        <span class="device-meta"></span>
+      </div>
+
+      <div class="kpi-row">
+        <div class="tile tile-hero" data-field="ac_power">
+          <span class="tile-label">Gesamtleistung</span>
+          <span class="tile-value"><span class="num">–</span><span class="unit">W</span></span>
+        </div>
+        <div class="tile" data-field="panel_count">
+          <span class="tile-label">Panele</span>
+          <span class="tile-value"><span class="num">–</span><span class="unit"></span></span>
+        </div>
+        <div class="tile" data-field="today_total">
+          <span class="tile-label">Ertrag heute</span>
+          <span class="tile-value"><span class="num">–</span><span class="unit">Wh</span></span>
+        </div>
+        <div class="tile" data-field="energy_total">
+          <span class="tile-label">Ertrag gesamt</span>
+          <span class="tile-value"><span class="num">–</span><span class="unit">Wh</span></span>
+        </div>
+        <div class="tile" data-field="temperature">
+          <span class="tile-label">Temperatur</span>
+          <span class="tile-value"><span class="num">–</span><span class="unit">°C</span></span>
+        </div>
+        <div class="tile" data-field="ac_voltage">
+          <span class="tile-label">AC-Spannung</span>
+          <span class="tile-value"><span class="num">–</span><span class="unit">V</span></span>
+        </div>
+        <div class="tile" data-field="ac_frequency">
+          <span class="tile-label">AC-Frequenz</span>
+          <span class="tile-value"><span class="num">–</span><span class="unit">Hz</span></span>
+        </div>
+      </div>
+
+      <h3 class="section-title">Panele</h3>
+      <div class="panel-row"></div>
+    </section>
+  </template>
+
+  <template id="panel-template">
+    <article class="panel-card">
+      <div class="panel-card-head">
+        <span class="panel-name"></span>
+        <span class="panel-power"></span>
+      </div>
+      <div class="panel-bar"><span class="panel-bar-fill"></span></div>
+      <dl class="panel-stats">
+        <div><dt>Spannung</dt><dd class="p-voltage">–</dd></div>
+        <div><dt>Strom</dt><dd class="p-current">–</dd></div>
+        <div><dt>Heute</dt><dd class="p-today">–</dd></div>
+        <div><dt>Gesamt</dt><dd class="p-total">–</dd></div>
+      </dl>
+    </article>
+  </template>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
